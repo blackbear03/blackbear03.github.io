@@ -227,6 +227,8 @@
           
   <div class="comments" id="comments">  
       
+      <div id="utterances-container"></div>  
+      
   </div>  
   
 
@@ -334,7 +336,21 @@
     
     
     
-    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
     
   
 
