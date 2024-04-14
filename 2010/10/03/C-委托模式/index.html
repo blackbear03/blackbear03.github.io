@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="C#委托模式" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="Tech, LAO WANG" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="LAO WANG" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="http://blackbear03.github.io/2010/10/03/C-委托模式/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>C#委托模式 - LAO WANG</title>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">LAO WANG</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">LAO WANG</a>  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      C#委托模式
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2010-10-03
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.</span> <span class="toc-text">委托的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">委托的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E4%B8%8E%E4%BA%8B%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">委托与事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E7%9A%84%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">委托的链式调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E5%A7%94%E6%89%98"><span class="toc-number">6.</span> <span class="toc-text">泛型委托</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5%EF%BC%9A"><span class="toc-number">7.</span> <span class="toc-text">相关链接：</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>C# 中的委托（Delegate）是一种特殊的类型，它安全地封装了方法的签名和引用。委托特别用于实现事件和回调方法。使用委托，可以将方法作为参数传递或赋值给变量，并可以调用委托所引用的方法。<br><br></p>
+<h3 id="委托的定义"><a href="#委托的定义" class="headerlink" title="委托的定义"></a>委托的定义</h3><p>委托的定义类似于方法的定义，但不带方法体。它定义了可以引用的方法的签名。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="built_in">int</span> <span class="title">MyDelegate</span>(<span class="params"><span class="built_in">int</span> x, <span class="built_in">int</span> y</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码定义了一个名为 <code>MyDelegate</code> 的委托，它接受两个 <code>int</code> 参数并返回一个 <code>int</code>。<br><br></p>
+<h3 id="委托的使用"><a href="#委托的使用" class="headerlink" title="委托的使用"></a>委托的使用</h3><p>委托的使用通常涉及三个步骤：</p>
+<ol>
+<li><strong>定义委托</strong>：如上所述。</li>
+<li><strong>创建委托实例</strong>：使用与委托签名匹配的方法创建委托实例。</li>
+<li><strong>调用委托</strong>：通过委托实例调用方法。</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 定义委托</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="built_in">int</span> <span class="title">MyDelegate</span>(<span class="params"><span class="built_in">int</span> x, <span class="built_in">int</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态方法，与委托签名匹配</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="title">Add</span>(<span class="params"><span class="built_in">int</span> a, <span class="built_in">int</span> b</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 创建委托实例，引用 Add 方法</span></span><br><span class="line">        MyDelegate <span class="built_in">delegate</span> = <span class="keyword">new</span> MyDelegate(Add);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用委托，实际调用的是 Add 方法</span></span><br><span class="line">        <span class="built_in">int</span> result = <span class="built_in">delegate</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br><span class="line">        Console.WriteLine(result); <span class="comment">// 输出 8</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
+
+<h3 id="委托与事件"><a href="#委托与事件" class="headerlink" title="委托与事件"></a>委托与事件</h3><p>在 C# 中，事件（Event）是基于委托的。事件提供了一种发布&#x2F;订阅模型，允许类或者对象通知其他类或者对象当某些特殊事情发生时（例如，用户点击按钮）。事件的实现通常包括一个私有的委托字段和一个公共的事件成员。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyClass</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 定义委托</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">MyEventHandler</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 声明事件</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">event</span> MyEventHandler MyEvent;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 触发事件的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnMyEvent</span>(<span class="params">EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        MyEventHandler handler = MyEvent;</span><br><span class="line">        <span class="keyword">if</span> (handler != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            handler(<span class="keyword">this</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 其他方法，在适当的时候调用 OnMyEvent</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅事件的类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MySubscriber</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">HandleMyEvent</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;MyEvent was raised!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用示例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        MyClass myObject = <span class="keyword">new</span> MyClass();</span><br><span class="line">        MySubscriber subscriber = <span class="keyword">new</span> MySubscriber();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 订阅事件</span></span><br><span class="line">        myObject.MyEvent += subscriber.HandleMyEvent;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 假设在某个地方触发了事件</span></span><br><span class="line">        myObject.OnMyEvent(EventArgs.Empty); <span class="comment">// 输出 &quot;MyEvent was raised!&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<br>
+
+<h3 id="委托的链式调用"><a href="#委托的链式调用" class="headerlink" title="委托的链式调用"></a>委托的链式调用</h3><p>委托可以使用 <code>+=</code> 运算符进行链式调用，这意味着可以将多个方法关联到同一个委托实例，当调用委托时，所有关联的方法都会按照它们被添加的顺序依次执行。同样地，可以使用 <code>-=</code> 运算符来移除之前添加的方法。<br><br></p>
+<h3 id="泛型委托"><a href="#泛型委托" class="headerlink" title="泛型委托"></a>泛型委托</h3><p>C# 还支持泛型委托，如 <code>Func&lt;TResult&gt;</code> 和 <code>Action&lt;T&gt;</code> 系列，它们分别用于表示有返回值和无返回值的方法。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;<span class="built_in">int</span>, <span class="built_in">int</span>, <span class="built_in">int</span>&gt; <span class="keyword">add</span> = (a, b) =&gt; a + b;</span><br><span class="line"><span class="built_in">int</span> sum = <span class="keyword">add</span>(<span class="number">5</span>, <span class="number">3</span>); <span class="comment">// sum 现在是 8</span></span><br><span class="line"></span><br><span class="line">Action&lt;<span class="built_in">string</span>&gt; display = (message) =&gt; Console.WriteLine(message);</span><br><span class="line">display(<span class="string">&quot;Hello, World!&quot;</span>); <span class="comment">// 输出 &quot;Hello, World!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>C#委托真的非常强大！！！<br><br></p>
+<h3 id="相关链接："><a href="#相关链接：" class="headerlink" title="相关链接："></a>相关链接：</h3><p>[1] <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/csharp/delegates-overview">C#中的委托和事件</a><br><br></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://blackbear03.github.io">Mark</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://blackbear03.github.io/2010/10/03/C-%E5%A7%94%E6%89%98%E6%A8%A1%E5%BC%8F/">http://blackbear03.github.io/2010/10/03/C-%E5%A7%94%E6%89%98%E6%A8%A1%E5%BC%8F/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Tech/">Tech</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2011/02/19/%E5%AF%BB%E5%B3%B0%E7%AE%97%E6%B3%95/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">寻峰算法</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+      <div id="utterances-container"></div>  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:blackbear03.w@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://twitter.com/blackbear_03" class="iconfont icon-twitter" title="twitter"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/blackbear03" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+  
+</div>
+
+
+
+<!-- <div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/zeed-w-beez/hexo-theme-even">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2024      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">Mark</span>
+  </span>
+
+</div> -->
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+
+</html>
