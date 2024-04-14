@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="SmartConsole模块设计" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="Tech, LAO WANG" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="LAO WANG" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="http://blackbear03.github.io/2010/12/23/SmartConsole模块设计/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Analytics and push -->
+
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>SmartConsole模块设计 - LAO WANG</title>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">LAO WANG</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">LAO WANG</a>  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      SmartConsole模块设计
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2010-12-23
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-Web%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">Java Web分层设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SmartConsole%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">SmartConsole模块设计</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SmartConsole是我们的软件项目名称，后续会运行在Windows CE系统的PDA设备上，为变电站检修人员提供近场或远程检测变电站设备运行状态的可视化工具软件。在展示相关数据之前，我们需要通过数据卡从现场的传感器中读取电弧放电电流的数值，然后对实时产生的电流数据进行预处理、存储、数据加工（读取设备端的几十项配置后对数据进行加工，计算出各项指标数据），最终在PDA软件窗口或者HTML页面展示全市各个变电站的运行状态数据。</p>
+<p>好啦，我们大概知道SmartConsole的核心模块和功能是什么了，接下来我们应该怎么进行模块划分和设计呢？<br>研发部经理建议我研究下Java Web的分层设计理念，他之前在IBM做了多年Java后台研发，对Java的设计理念一直很推崇。之前大三匆匆囫囵吞枣看完的《Java编程思想》，在他的推荐下又重读了一遍电子版，收获满满！</p>
+<p>接下来，让我们看看Java Web的分层设计吧~<br><br></p>
+<h1 id="Java-Web分层设计"><a href="#Java-Web分层设计" class="headerlink" title="Java Web分层设计"></a>Java Web分层设计</h1><p>Java Web分层设计是一种软件架构设计模式，旨在将应用程序的不同部分（或层）分离，使得每一层都负责一组特定的任务或功能。这种分层架构有助于降低系统的复杂性，提高可维护性，并促进团队协作。</p>
+<div style="text-align:center">  
+  <img src="/images/java-web-arch.jpg">  
+</div>
+
+<p>在Java Web应用中，常见的分层包括：表现层（UI层）、业务逻辑层（服务层）、数据访问层（DAO层）和数据库层。</p>
+<ol>
+<li><p><strong>表现层（UI层）</strong>：</p>
+<ul>
+<li>负责与用户进行交互，展示信息并接收用户输入。</li>
+<li>通常使用HTML、CSS、JavaScript等技术实现前端页面。</li>
+</ul>
+</li>
+<li><p><strong>业务逻辑层（服务层）</strong>：</p>
+<ul>
+<li>负责实现应用程序的核心业务逻辑。</li>
+<li>调用数据访问层的方法获取或操作数据，并进行必要的业务处理。</li>
+<li>在Spring框架中，可以使用Service类来实现业务逻辑层。</li>
+</ul>
+</li>
+<li><p><strong>数据访问层（DAO层）</strong>：</p>
+<ul>
+<li>负责与数据库进行交互，执行数据的增删改查操作。</li>
+<li>封装了底层的数据访问细节，为业务逻辑层提供统一的数据访问接口。</li>
+<li>在Spring框架中，可以使用MyBatis、Hibernate等ORM框架来实现数据访问层。</li>
+</ul>
+</li>
+<li><p><strong>数据库层</strong>：</p>
+<ul>
+<li>负责存储和管理应用程序的数据。</li>
+<li>可以使用SQL Server、Oracle等。</li>
+</ul>
+</li>
+</ol>
+<p>分层设计的好处包括：</p>
+<ul>
+<li><strong>解耦</strong>：各层之间相对独立，降低了层与层之间的依赖关系，使得代码更加清晰和易于维护。</li>
+<li><strong>可重用性</strong>：通过抽象和封装，可以将某一层的代码或功能在其他项目中进行重用。</li>
+<li><strong>易于测试</strong>：每一层都可以进行独立的单元测试，提高了测试的效率和准确性。</li>
+<li><strong>团队协作</strong>：不同的团队或开发人员可以专注于不同层的开发，提高了开发效率。</li>
+</ul>
+<br>
+
+<h1 id="SmartConsole模块设计"><a href="#SmartConsole模块设计" class="headerlink" title="SmartConsole模块设计"></a>SmartConsole模块设计</h1><p><img src="/images/SmartConsole%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1.png"></p>
+<ol>
+<li><p><strong>窗口程序</strong>：</p>
+<ul>
+<li>类似Java Web的表现层，负责展示变电站运行数据，支持用户修改配置项等。</li>
+</ul>
+</li>
+<li><p><strong>核心层</strong>：</p>
+<ul>
+<li>负责提供窗口程序所需的相关数据</li>
+</ul>
+</li>
+<li><p><strong>中间层</strong>：</p>
+<ul>
+<li>数据解析、存储、数据库访问操作</li>
+<li>提供作业人员进行操控配置</li>
+<li>运行状态检测和告警</li>
+</ul>
+</li>
+<li><p><strong>引用层</strong>：</p>
+<ul>
+<li>日志工具、math库</li>
+<li>毫秒级别精度的时间库等。</li>
+</ul>
+</li>
+</ol>
+  <br>
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://blackbear03.github.io">Mark</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://blackbear03.github.io/2010/12/23/SmartConsole%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1/">http://blackbear03.github.io/2010/12/23/SmartConsole%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Tech/">Tech</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2011/02/19/%E5%AF%BB%E5%B3%B0%E7%AE%97%E6%B3%95/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">寻峰算法</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2010/10/03/C-%E5%A7%94%E6%89%98%E6%A8%A1%E5%BC%8F/">  
+        <span class="next-text nav-default">C#委托模式</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+      <div id="utterances-container"></div>  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:blackbear03.w@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://twitter.com/blackbear_03" class="iconfont icon-twitter" title="twitter"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/blackbear03" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+  
+</div>
+
+
+
+<!-- <div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/zeed-w-beez/hexo-theme-even">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2024      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">Mark</span>
+  </span>
+
+</div> -->
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+
+</html>
