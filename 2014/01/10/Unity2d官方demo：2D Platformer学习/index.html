@@ -18,6 +18,8 @@
 
 <!-- Website description -->
 
+<meta name="description" content="Unity2d官方demo：2D Platformer学习" />
+
 
 <!-- Website keywords -->
 
@@ -35,7 +37,7 @@
 
 
 <!-- Canonical, good for google search engine -->
-<link rel="canonical" href="http://blackbear03.github.io/archives/2017/06/" />
+<link rel="canonical" href="http://blackbear03.github.io/2014/01/10/Unity2d官方demo：2D Platformer学习/" />
 
 <!-- Fancybox styling -->
 
@@ -73,7 +75,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"latex":false};
 </script>
   
-  <title>Archives - 2017/6 · LAO WANG</title>
+  <title>Unity2d官方demo：2D Platformer学习 - LAO WANG</title>
 
 <meta name="generator" content="Hexo 7.1.1"></head>
 
@@ -161,57 +163,108 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      Unity2d官方demo：2D Platformer学习
+      
+    </h1>
 
-<section id="archive" class="archive">
+    <div class="post-meta">
+      <span class="post-time">
+        2014-01-10
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
   
-  
-  <div class="archive-title">
-    <span class="archive-post-counter">
-      7 Posts In Total
-    </span>
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD2D-Platformer%E5%8C%85"><span class="toc-number">1.</span> <span class="toc-text">下载2D Platformer包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAproject%EF%BC%8C%E5%B9%B6%E5%88%B0%E5%AF%BC%E5%85%A52D-Platformer"><span class="toc-number">2.</span> <span class="toc-text">新建project，并到导入2D Platformer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%BC%E5%87%BAiOS%E5%B7%A5%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">导出iOS工程</span></a></li></ol>
+    </div>
   </div>
   
-  
 
-  
-  
-  
-  
-  
-  
-  <div class="collection-title">
-    <h2 class="archive-year">
-      <a href="/archives/2017" class="archive-year">2017</a>
-    </h2>
+  <div class="post-content">
+    
+    <h1 id="下载2D-Platformer包"><a href="#下载2D-Platformer包" class="headerlink" title="下载2D Platformer包"></a>下载2D Platformer包</h1><p>在Asset Store中，下载2D Platformer包（略）</p>
+<h1 id="新建project，并到导入2D-Platformer"><a href="#新建project，并到导入2D-Platformer" class="headerlink" title="新建project，并到导入2D Platformer"></a>新建project，并到导入2D Platformer</h1><p>勾选Unity Projects 2D Plastformer.unitypackage.将左下角的3D改为2D,点击创建：<br><img src="/images/project-wizard.png"></p>
+<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><p>点击运行按钮，就可以在工作区预览游戏并可以直接Play:<br><img src="/images/game-play.jpg"></p>
+<h1 id="导出iOS工程"><a href="#导出iOS工程" class="headerlink" title="导出iOS工程"></a>导出iOS工程</h1><p>打开File-&gt;Build&amp;Run(快捷键是Command+B),选中弹出框左下Platform中的iOS：<br><img src="/images/ios-export.jpg"></p>
+<p>点击左下角的Player Settings,进行相关设置:<br><img src="/images/ios-settings.jpg"></p>
+<p>如上图，将屏幕方向设置为横屏。</p>
+<p><img src="/images/ios-simulator.jpg"><br>如上图，将SDK Version设置为Simulator SDK，这样可以在模拟器中运行导出的工程（默认设置只能连接真机运行）。</p>
+<p>最后，点击Build And Run按钮，让我们来看看2D Platformer在IOS 模拟器中的运行效果吧。<br><img src="/images/ios-game.jpg"></p>
+<p>我勒个去，图片都跑哪去了。。。Xcode没有提供有用的信息，只好在Unity工程中找到如下信息：<br><img src="/images/unity-error.jpg"></p>
+<p>意思大概是说用PVRTC 4位格式压缩的话不能生成非正方形的纹理。。。</p>
+<p>一番折腾后，最后解决办法其实很简单:在Unity中点击相应的图片，在Inspector面板中，勾选Override for iPhone,并将Format由Compressed改为16 bits,点击应用，图片正常显示。对所有问题图片进行上述操作（不知大神有没有批量处理的方法）<br><img src="/images/img-fix.jpg"></p>
+<p>最后在iOS模拟器中正常运行：<br><img src="/images/ios-ret.jpg"><br>（没有虚拟摇杆，将就着玩吧）</p>
+
+    
   </div>
-  
-  
-
-  <div class="archive-post">
-    <span class="archive-post-time">
-      
-      06-13
-      
-    </span>
-    <span class="archive-post-title">
-      <a href="/2017/06/13/%E5%AD%B5%E5%8C%96Twitter%EF%BC%9A%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E5%8F%8B%E6%83%85%E3%80%81%E5%88%9B%E4%B8%9A%E4%B8%8E%E8%83%8C%E5%8F%9B%E7%9A%84%E6%95%85%E4%BA%8B/" class="archive-post-link">
-        孵化Twitter：一个关于友情、创业与背叛的故事
-      </a>
-    </span>
-  </div>
-  
-</section>
 
   
-  <nav class="pagination">  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://blackbear03.github.io">Mark</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://blackbear03.github.io/2014/01/10/Unity2d%E5%AE%98%E6%96%B9demo%EF%BC%9A2D%20Platformer%E5%AD%A6%E4%B9%A0/">http://blackbear03.github.io/2014/01/10/Unity2d%E5%AE%98%E6%96%B9demo%EF%BC%9A2D%20Platformer%E5%AD%A6%E4%B9%A0/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
       
+  <nav class="post-nav">  
+      
+      <a class="prev" href="/2014/04/18/Cocos2d-x2-2%E4%BD%BF%E7%94%A8Admob%E6%8F%92%E5%B1%8F%E5%B9%BF%E5%91%8A%E6%95%99%E7%A8%8B-%E4%B8%80-%EF%BC%9AiOS%E7%AF%87/">  
+        <i class="iconfont icon-left"></i>  
+        <span class="prev-text nav-default">Cocos2d-x2.2使用Admob插屏广告教程(一)：iOS篇</span>  
+        <span class="prev-text nav-mobile">Prev</span>  
+      </a>  
+      
+      
+      <a class="next" href="/2011/02/19/%E5%AF%BB%E5%B3%B0%E7%AE%97%E6%B3%95/">  
+        <span class="next-text nav-default">寻峰算法</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
       
   </nav>  
   
 
+  </footer>
+  
+
+</article>
         </div>
           
+  <div class="comments" id="comments">  
+      
+      <div id="utterances-container"></div>  
+      
+  </div>  
+  
 
       </div>
     </main>
@@ -339,6 +392,27 @@
     <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
   </div>
     
+    
+    
+    
+    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
+    
+  
 
   
 
