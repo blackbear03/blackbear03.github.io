@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="Spring boot：使用Mybatis访问MySQL" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="Tech, LAO WANG" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="LAO WANG" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="http://blackbear03.github.io/2020/01/30/Spring-boot：使用Mybatis访问MySQL/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Analytics and push -->
+
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?" + "8ee5fa5409f3df806c00a4afa80773da";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>Spring boot：使用Mybatis访问MySQL - LAO WANG</title>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">LAO WANG</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/about/me">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+    <a href="/links">
+      <li class="mobile-menu-item">
+        
+        
+        Links              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">LAO WANG</a>  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/me">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/links">  
+              
+              
+              Links  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      Spring boot：使用Mybatis访问MySQL
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2020-01-30
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">项目环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">MySQL安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E4%B8%8B%E8%BD%BDMySQL"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 下载MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E4%BD%BF%E7%94%A8Shell%E8%84%9A%E6%9C%AC%E5%90%AF%E5%8A%A8-%E5%81%9C%E6%AD%A2DB-Server"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 使用Shell脚本启动&#x2F;停止DB Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E7%99%BB%E5%BD%95MySQL"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 登录MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 重置密码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8MySQL"><span class="toc-number">3.</span> <span class="toc-text">使用MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="toc-number">3.1.</span> <span class="toc-text">3.1. 创建数据库表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%AE%89%E8%A3%85GUI%E5%B7%A5%E5%85%B7"><span class="toc-number">3.2.</span> <span class="toc-text">3.2. 安装GUI工具</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E5%B7%A5%E7%A8%8B%E4%B8%AD%E9%85%8D%E7%BD%AEMyBatis%E5%92%8CMySQL"><span class="toc-number">4.</span> <span class="toc-text">在工程中配置MyBatis和MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-pom-xml%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96"><span class="toc-number">4.1.</span> <span class="toc-text">4.1. pom.xml配置依赖</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Mybatis%E8%AE%BF%E9%97%AEMySQL"><span class="toc-number">5.</span> <span class="toc-text">使用Mybatis访问MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E5%88%9B%E5%BB%BAMapper%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.1.</span> <span class="toc-text">5.1. 创建Mapper接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5Mapper%E5%B9%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">5.2.</span> <span class="toc-text">5.2. 依赖注入Mapper并使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95"><span class="toc-number">5.3.</span> <span class="toc-text">5.3. 接口测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">附录：</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h1 id="项目环境"><a href="#项目环境" class="headerlink" title="项目环境"></a>项目环境</h1><ul>
+<li>操作系统：Mac OSX Catalina 10.15.1</li>
+<li>IDE: IntelliJ IDEA CE(社区版)</li>
+<li>mysql: MySQL Community Server 8.0.19</li>
+<li>mybatis-spring-boot-starter：2.1.1</li>
+<li>mysql-connector-java</li>
+</ul>
+<h1 id="MySQL安装"><a href="#MySQL安装" class="headerlink" title="MySQL安装"></a>MySQL安装</h1><h2 id="2-1-下载MySQL"><a href="#2-1-下载MySQL" class="headerlink" title="2.1. 下载MySQL"></a>2.1. 下载MySQL</h2><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/downloads/mysql/">官网下载地址</a><br>下载并安装dmg文件, 安装过程会要求设置密码，为了方便使用，可以选择传统的密码加密方式<br><strong>Use Legacy Password Encryption</strong>，设置root密码</p>
+<div style="text-align:center">  
+  <img src="/images/set-pwd.png">  
+</div>
+安装成功之后，系统偏好设置面板中会出现mysql图标，点击会展开操作面板：
+<div style="text-align:center">  
+  <img src="/images/start-mysql.png">  
+</div>
+
+<p>支持手动<strong>启动&#x2F;停止</strong>数据库服务，选择<strong>Initialize Database</strong>可以修改密码加密方式和密码，下文会介绍如果使用命令行完成这些任务。</p>
+<h2 id="2-2-使用Shell脚本启动-停止DB-Server"><a href="#2-2-使用Shell脚本启动-停止DB-Server" class="headerlink" title="2.2. 使用Shell脚本启动&#x2F;停止DB Server"></a>2.2. 使用Shell脚本启动&#x2F;停止DB Server</h2><p>使用脚本之前，请先配置<strong>mysql环境变量</strong>，以使用<strong>zsh</strong>为例，我们需要在.<strong>zshrc</strong>文件中添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mysql </span><br><span class="line">export PATH=&quot;$PATH&quot;:/usr/local/mysql/bin</span><br></pre></td></tr></table></figure>
+<p>保存之后执行source命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source .zshrc</span><br></pre></td></tr></table></figure>
+<p>启动mysql：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server start</span><br></pre></td></tr></table></figure>
+<p>停止mysql:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server stop</span><br></pre></td></tr></table></figure>
+<p>重启mysql:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/support-files/mysql.server restart</span><br></pre></td></tr></table></figure>
+<p>保存命令行至<strong>shell</strong>文件中，方便后续使用</p>
+<div style="text-align:center">  
+  <img src="/images/mysql-shell.png">  
+</div>
+别忘了给shell文件添加执行权限
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 mysql-start.sh chmod 777 mysql-restart.sh chmod 777 mysql-stop.sh</span><br></pre></td></tr></table></figure>
+好了，现在尝试使用shell脚本来操作mysql server吧:)
+
+<h2 id="2-3-登录MySQL"><a href="#2-3-登录MySQL" class="headerlink" title="2.3. 登录MySQL"></a>2.3. 登录MySQL</h2><p>执行命令行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>输入初始设置的密码，登录成功会进入mysql&gt;命令行输入界面，若出现无权限提示，需要重置密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR 1045 (28000): Access denied for user &#x27;root&#x27;@&#x27;localhost&#x27; (using password: YES)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-重置密码"><a href="#2-4-重置密码" class="headerlink" title="2.4. 重置密码"></a>2.4. 重置密码</h2><ol>
+<li>停止MySQL server</li>
+<li>使用安全模式启动MySQL server, 添加–skip-grant-tables参数关闭登录时密码校验<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/bin/mysqld_safe --skip-grant-tables</span><br></pre></td></tr></table></figure></li>
+<li>无密码登录MySQL<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/local/mysql/bin/mysql -u root</span><br></pre></td></tr></table></figure></li>
+<li>在mysql&gt;输入命令修改root登录密码<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; ALTER USER &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;new pwd&#x27;;</span><br></pre></td></tr></table></figure></li>
+<li>若遇到下面的错误提示，请刷新权限表之后重新执行密码修改命令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this statement</span><br></pre></td></tr></table></figure></li>
+<li>刷新权限表<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="使用MySQL"><a href="#使用MySQL" class="headerlink" title="使用MySQL"></a>使用MySQL</h1><h2 id="3-1-创建数据库表"><a href="#3-1-创建数据库表" class="headerlink" title="3.1. 创建数据库表"></a>3.1. 创建数据库表</h2><ol>
+<li>首先创建一个独立的DB用于开发<br>mysql&gt; create database dev_db;</li>
+<li>切换到新创建的DB<br>mysql&gt; use database dev_db;</li>
+<li>在dev_db下新建表t_member<br>mysql&gt; create table t_member(id int, name varchar(255), book_count int, min_duration int, max_duration int, av_duration int, times_per_week int);</li>
+<li>手动插入几条测试数据<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into t_member values(1, &quot;小明&quot;, 10, 30, 65, 45, 3);</span><br><span class="line">mysql&gt; insert into t_member values(2, &quot;小红&quot;, 5, 10, 30, 25, 2);</span><br><span class="line">mysql&gt; insert into t_member values(3, &quot;小强&quot;, 25, 30, 120, 68, 7);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="3-2-安装GUI工具"><a href="#3-2-安装GUI工具" class="headerlink" title="3.2. 安装GUI工具"></a>3.2. 安装GUI工具</h2><ol>
+<li>推荐安装<a target="_blank" rel="noopener" href="https://sequelpro.com/test-builds">Sequel Pro</a>最新测试版本，因为稳定版本在loading数据库时会出现卡死，详细原因参见GitHub issue: <a target="_blank" rel="noopener" href="https://github.com/sequelpro/sequelpro/issues/2699">#2699</a></li>
+<li>使用<strong>Standard</strong>或<strong>TCP&#x2F;IP</strong>方式连接MySQL server并添加到收藏列表<div style="text-align:center">  
+  <img src="/images/mysql-login.png">  
+</div></li>
+</ol>
+<p>连接成功后可以切换DB和查看表</p>
+<div style="text-align:center">  
+  <img src="/images/mysql-table.png">  
+</div>
+
+<h1 id="在工程中配置MyBatis和MySQL"><a href="#在工程中配置MyBatis和MySQL" class="headerlink" title="在工程中配置MyBatis和MySQL"></a>在工程中配置MyBatis和MySQL</h1><h2 id="4-1-pom-xml配置依赖"><a href="#4-1-pom-xml配置依赖" class="headerlink" title="4.1. pom.xml配置依赖"></a>4.1. pom.xml配置依赖</h2><p>添加<strong>mybatis-spring-boot-starter和mysql-connector-java</strong>依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>4.2. 配置数据库<br>在<strong>resources&#x2F;application.properties</strong>中添加配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mybatis.type-aliases-package=com.example.domains </span><br><span class="line">spring.datasource.driverClassName = com.mysql.cj.jdbc.Driver </span><br><span class="line">spring.datasource.url = jdbc:mysql://localhost:3306/dev_db?useUnicode=true&amp;characterEncoding=utf-8 spring.datasource.username = &#123;your username&#125; </span><br><span class="line">spring.datasource.password = &#123;your password&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用Mybatis访问MySQL"><a href="#使用Mybatis访问MySQL" class="headerlink" title="使用Mybatis访问MySQL"></a>使用Mybatis访问MySQL</h1><h2 id="5-1-创建Mapper接口"><a href="#5-1-创建Mapper接口" class="headerlink" title="5.1. 创建Mapper接口"></a>5.1. 创建Mapper接口</h2><p>在每个接口声明之前需要使用@Mapper注解，由于MyBatis动态代理机制的存在，我们无需手动实现Mapper接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.demo01.mapper; </span><br><span class="line"><span class="keyword">import</span> com.example.demo01.domains.MemberPO; </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Mapper; </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Param; </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Select; </span><br><span class="line"><span class="meta">@Mapper</span> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MemberMapper</span> &#123;     </span><br><span class="line">    <span class="meta">@Select(&quot;SELECT * FROM t_member WHERE name = #&#123;name&#125;&quot;)</span>     </span><br><span class="line">    MemberPO <span class="title function_">findByName</span><span class="params">(<span class="meta">@Param(&quot;name&quot;)</span> String name)</span>; </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>为了免去每个接口文件都要添加@Mapper注解，MyBatis提供统一扫描包的方式鉴别Mapper接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MapperScan(&quot;your mapper package&quot;)</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span> </span><br><span class="line"><span class="meta">@MapperScan(&quot;com.example.demo01.mapper&quot;)</span> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoApplication</span> &#123;    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;      </span><br><span class="line">         SpringApplication.run(DemoApplication.class, args);    </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-依赖注入Mapper并使用"><a href="#5-2-依赖注入Mapper并使用" class="headerlink" title="5.2. 依赖注入Mapper并使用"></a>5.2. 依赖注入Mapper并使用</h2><p>使用@Autowired注解，注入Mapper依赖，然后就可以直接使用Mapper实例调用接口方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DemoController</span> &#123;     </span><br><span class="line">    <span class="meta">@Autowired</span>     </span><br><span class="line">    <span class="keyword">private</span> MemberMapper memberMapper;     </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/&quot;)</span>     </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">sayHello</span><span class="params">()</span> &#123;         </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello&quot;</span>;     </span><br><span class="line">    &#125;     </span><br><span class="line">    <span class="meta">@RequestMapping(value=&quot;/member/&#123;name&#125;&quot;,method= RequestMethod.GET)</span>     <span class="keyword">public</span> MemberDTO <span class="title function_">getMemberInfo</span><span class="params">(<span class="meta">@PathVariable(&quot;name&quot;)</span> String name)</span> &#123;         </span><br><span class="line">        <span class="type">MemberPO</span> <span class="variable">memberPO</span> <span class="operator">=</span> memberMapper.findByName(name);         <span class="type">MemberDTO</span> <span class="variable">memberDTO</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MemberDTO</span>();         </span><br><span class="line">        memberDTO.setName(memberPO.getName());         </span><br><span class="line">        memberDTO.setBookCount(memberPO.getBook_count());         </span><br><span class="line">        memberDTO.setAverageDuration(memberPO.getAv_duration());      </span><br><span class="line">        memberDTO.setTimesPerWeek(memberPO.getTimes_per_week());         <span class="keyword">return</span> memberDTO;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-3-接口测试"><a href="#5-3-接口测试" class="headerlink" title="5.3. 接口测试"></a>5.3. 接口测试</h2><p>运行<strong>DemoApplication</strong>, 用Chrome测试一下接口</p>
+<div style="text-align:center">  
+  <img src="/images/api-test.png">  
+</div>
+
+<h1 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h1><p><strong>issue 1:</strong> java: 变量 memberMapper 未在默认构造器中初始化<br>private MemberMapper memberMapper; 变量声明时未使用@Autowired注解</p>
+<p><strong>issue 2:</strong> This application has no explicit mapping for &#x2F;error, so you are seeing this as a fallback.<br>代码里面url mapping是正确的，原因是Controller所在的包没有包含在Application所在的包里面，正确的目录结构是这样的：</p>
+<div style="text-align:center">  
+  <img src="/images/issue-2.png">  
+</div>
+
+<p><strong>issue 3:</strong> 更改目录结构之后工程文件出现警告Cannot resolve symbol, 但是应用可以正常运行，需要清理缓存<br>其中一种解决方法：进入<strong>File &gt; Invalidate Caches &amp; Restart</strong></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://blackbear03.github.io">Mark</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://blackbear03.github.io/2020/01/30/Spring-boot%EF%BC%9A%E4%BD%BF%E7%94%A8Mybatis%E8%AE%BF%E9%97%AEMySQL/">http://blackbear03.github.io/2020/01/30/Spring-boot%EF%BC%9A%E4%BD%BF%E7%94%A8Mybatis%E8%AE%BF%E9%97%AEMySQL/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Tech/">Tech</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      
+      <a class="next" href="/2020/01/28/Spring-boot%EF%BC%9A%E4%BD%BF%E7%94%A8IDEA%E7%A4%BE%E5%8C%BA%E7%89%88%E6%9C%AC%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE/">  
+        <span class="next-text nav-default">Spring boot：使用IDEA社区版本创建项目</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+      <div id="utterances-container"></div>  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:blackbear03.w@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://twitter.com/blackbear_03" class="iconfont icon-twitter" title="twitter"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/blackbear03" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+  
+</div>
+
+
+<!-- 
+  <span id="busuanzi_container_site_pv">
+    欢迎来自C-53行星的第<span id="busuanzi_value_site_uv"></span>位访客
+  </span>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+ <span class="post-meta-divider">|</span>
+  <span id="busuanzi_container_site_uv" style='display:none'>
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ -->
+
+<!-- <div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/zeed-w-beez/hexo-theme-even">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2024      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">Mark</span>
+  </span>
+
+</div> -->
+
+<div class="copyright">
+  
+    <span id="busuanzi_container_site_pv">
+      欢迎来自C-53行星的第<span id="busuanzi_value_site_pv"></span>位朋友
+    </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <span class="heart">
+    <i class="iconfont icon-heart"></i>
+  </span>
+
+</div>
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+
+</html>
