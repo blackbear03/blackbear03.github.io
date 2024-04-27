@@ -23,6 +23,8 @@
 
 <!-- Website keywords -->
 
+<meta name="keywords" content="Tech, LAO WANG" />
+
 
 
 
@@ -37,7 +39,7 @@
 
 
 <!-- Canonical, good for google search engine -->
-<link rel="canonical" href="http://blackbear03.github.io/2016/09/27/LLVM探究/" />
+<link rel="canonical" href="http://blackbear03.github.io/2016/09/22/LLVM探究/" />
 
 <!-- Fancybox styling -->
 
@@ -173,7 +175,7 @@
 
     <div class="post-meta">
       <span class="post-time">
-        2016-09-27
+        2016-09-22
       </span>
       
       
@@ -199,13 +201,30 @@
 <li>编译优化器：对中间表示进行各种优化，以提高代码性能。</li>
 <li>编译后端：将优化后的中间表示转换为目标机器的代码。<br>通过三段式的架构设计，LLVM可以通过灵活切换不同编程语言的前端实现，转化成通用的中间表示，并通过编译后端通过本机编译或者交叉编译适配成目标机器代码，从而实现了高扩展性。LLVM能够快速支持各种新的编程语言，主要得益于三段式架构的高可扩展性。</li>
 </ol>
-<h1 id="LLVM架构"><a href="#LLVM架构" class="headerlink" title="LLVM架构"></a>LLVM架构</h1><p>传统编译器的三段式架构：<br><img src="/images%5Csingle-arch.png"><br>编译前端（Frontend）通过词法、语法、语义一系列分析，构建抽象语法树（AST），AST可以转换成某种中间表示（IR），作为编译优化器（Optimizer）的输入。编译优化器负责对中间代码进行优化，比如无用代码消除、冗余指令合并、函数内联等，以提升代码运行时性能。编译优化器输入IR，最终输出是优化过的IR。经过编译优化器（Optimizer）优化后的IR经过编译后端（Backend）转换成目标平台的机器码。<br>通过这种组件化的设计，任何编程语言的编译器只要实现了上述3个部件，就能够把对应语言编写的源代码编译成目标平台可运行的机器代码。<br>但是程序员永远会想着如何提升代码的复用性，何况这些编译器大神们。所以支持多语言多平台的新架构被提出：<br><img src="/images%5Cmulti-arch.png"><br>上述新架构支持不同的编程语言生成统一的中间表示（IR），新语言只用实现一个新的编译前端（Frontend）,编译优化器（Optimizer）和编译后端（Backend）则可以复用。<br>在现存的编译器中，JVM、.Net虚拟机提供了定义良好中间表示的字节码，理论上任意语言只要实现编译前端，支持把源代码转成字节码就可以使用JVM或者.Net虚拟机。但是运行时强制JIT编译、GC等并不适合像C这样的编程语言。而另一个新架构的代表GCC, 则因为早期设计中存在的耦合问题比如编译后端（Backend）需要遍历编译前端（Frontend）的AST生成调试信息，编译前端（Frontend）生成编译后端（Backend）的数据结构，以及全局变量和数据结构的滥用，导致三大编译组件耦合，代码复用性较差。<br>LLVM在实现三段式架构中，汲取了GCC的教训，在设计中采用了模块化设计，整个编译器由一系列可复用的库组成。<br><img src="/images%5Cllvm-arch.png"></p>
+<h1 id="LLVM架构"><a href="#LLVM架构" class="headerlink" title="LLVM架构"></a>LLVM架构</h1><p>传统编译器的三段式架构：</p>
+<div style="text-align:center">  
+  <img src="/images/single-arch.png">  
+</div>
+
+<p>编译前端（Frontend）通过词法、语法、语义一系列分析，构建抽象语法树（AST），AST可以转换成某种中间表示（IR），作为编译优化器（Optimizer）的输入。编译优化器负责对中间代码进行优化，比如无用代码消除、冗余指令合并、函数内联等，以提升代码运行时性能。编译优化器输入IR，最终输出是优化过的IR。经过编译优化器（Optimizer）优化后的IR经过编译后端（Backend）转换成目标平台的机器码。<br>通过这种组件化的设计，任何编程语言的编译器只要实现了上述3个部件，就能够把对应语言编写的源代码编译成目标平台可运行的机器代码。<br>但是程序员永远会想着如何提升代码的复用性，何况这些编译器大神们。所以支持多语言多平台的新架构被提出：</p>
+<div style="text-align:center">  
+  <img src="/images/multi-arch.png">  
+</div>
+
+<p>上述新架构支持不同的编程语言生成统一的中间表示（IR），新语言只用实现一个新的编译前端（Frontend）,编译优化器（Optimizer）和编译后端（Backend）则可以复用。<br>在现存的编译器中，JVM、.Net虚拟机提供了定义良好中间表示的字节码，理论上任意语言只要实现编译前端，支持把源代码转成字节码就可以使用JVM或者.Net虚拟机。但是运行时强制JIT编译、GC等并不适合像C这样的编程语言。而另一个新架构的代表GCC, 则因为早期设计中存在的耦合问题比如编译后端（Backend）需要遍历编译前端（Frontend）的AST生成调试信息，编译前端（Frontend）生成编译后端（Backend）的数据结构，以及全局变量和数据结构的滥用，导致三大编译组件耦合，代码复用性较差。<br>LLVM在实现三段式架构中，汲取了GCC的教训，在设计中采用了模块化设计，整个编译器由一系列可复用的库组成。</p>
+<div style="text-align:center">  
+  <img src="/images/llvm-arch.png">  
+</div>
+
 <h1 id="LLVM-IR"><a href="#LLVM-IR" class="headerlink" title="LLVM IR"></a>LLVM IR</h1><p>LLVM IR是.ll结尾的文件：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">define i32 @add1(i32 %a, i32 %b) &#123;</span><br><span class="line">entry:</span><br><span class="line">  %tmp1 = add i32 %a, %b</span><br><span class="line">  ret i32 %tmp1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">define i32 @add2(i32 %a, i32 %b) &#123;</span><br><span class="line">entry:</span><br><span class="line">  %tmp1 = icmp eq i32 %a, 0</span><br><span class="line">  br i1 %tmp1, label %done, label %recurse</span><br><span class="line"></span><br><span class="line">recurse:</span><br><span class="line">  %tmp2 = sub i32 %a, 1</span><br><span class="line">  %tmp3 = add i32 %b, 1</span><br><span class="line">  %tmp4 = call i32 @add2(i32 %tmp2, i32 %tmp3)</span><br><span class="line">  ret i32 %tmp4</span><br><span class="line"></span><br><span class="line">done:</span><br><span class="line">  ret i32 %b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对应的C语言代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">unsigned add1(unsigned a, unsigned b) &#123;</span><br><span class="line">  return a+b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Perhaps not the most efficient way to add two numbers.</span><br><span class="line">unsigned add2(unsigned a, unsigned b) &#123;</span><br><span class="line">  if (a == 0) return b;</span><br><span class="line">  return add2(a-1, b+1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="LLVM-Optimizer"><a href="#LLVM-Optimizer" class="headerlink" title="LLVM Optimizer"></a>LLVM Optimizer</h1><p><img src="/images%5Cllvm-pass.png"></p>
+<h1 id="LLVM-Optimizer"><a href="#LLVM-Optimizer" class="headerlink" title="LLVM Optimizer"></a>LLVM Optimizer</h1><div style="text-align:center">  
+  <img src="/images/llvm-pass.png">  
+</div>
+
 <p>LLVM优化器提供一系列Pass进行代码优化，这些Pass一般由C++编写，被编译成.o文件集成在.a库中。Pass可以通过PassManager进行创建和添加，方便开发者自由选择Pass进行组合和编排，同时LLVM也支持自定义Pass。以冗余指令合并Pass（<a target="_blank" rel="noopener" href="https://github.com/llvm-mirror/llvm/blob/2c4ca6832fa6b306ee6a7010bfb80a3f2596f824/lib/Transforms/InstCombine/InstructionCombining.cpp#L3597">InstructionCombine.cpp源码实现</a>）为例：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;llvm/Pass.h&quot;</span><br><span class="line">#include &quot;llvm/IR/Function.h&quot;</span><br><span class="line">#include &quot;llvm/IR/Instructions.h&quot;</span><br><span class="line">#include &quot;llvm/Support/raw_ostream.h&quot;</span><br><span class="line"> </span><br><span class="line">using namespace llvm;</span><br><span class="line"> </span><br><span class="line">namespace &#123;</span><br><span class="line">struct MergeInstructions : public FunctionPass &#123;</span><br><span class="line">    static char ID;</span><br><span class="line"> </span><br><span class="line">    MergeInstructions() : FunctionPass(ID) &#123;&#125;</span><br><span class="line"> </span><br><span class="line">    bool runOnFunction(Function &amp;F) override &#123;</span><br><span class="line">        bool Changed = false;</span><br><span class="line">        for (BasicBlock &amp;BB : F) &#123;</span><br><span class="line">            for (Instruction &amp;I : BB) &#123;</span><br><span class="line">                // 这里可以添加合并指令的逻辑</span><br><span class="line">                // 例如，如果发现两个相同的指令，就尝试合并它们</span><br><span class="line">                // 如果成功合并，设置Changed为true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return Changed;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">char MergeInstructions::ID = 0;</span><br><span class="line">static RegisterPass&lt;MergeInstructions&gt; X(&quot;mergeinst&quot;, &quot;Merge Instructions Pass&quot;);</span><br></pre></td></tr></table></figure>
 <p>常见的Pass列表：</p>
@@ -231,7 +250,21 @@
 <li>BlockPlacement：块放置，优化基本块在函数中的布局。</li>
 <li>InlineFunction：内联函数，将小函数的代码直接插入到调用它的地方。</li>
 </ol>
-<h1 id="LLVM代码生成"><a href="#LLVM代码生成" class="headerlink" title="LLVM代码生成"></a>LLVM代码生成</h1><p>X86平台代码生成过程：<br><img src="/images%5Cllvm-x86.png"><br>LLVM提供DSL语言对目标平台进行一组.tb文件的特性描述，最终通过tblgen进行处理，生成特定平台的代码。<br>LLVM还提供链接时和安装时代码优化：<br><img src="/images%5Cllvm-linker-opt.png"><br>链接时优化<br><img src="/images%5Cllvm-install-opt.png"><br>安装时优化</p>
+<h1 id="LLVM代码生成"><a href="#LLVM代码生成" class="headerlink" title="LLVM代码生成"></a>LLVM代码生成</h1><p>X86平台代码生成过程：</p>
+<div style="text-align:center">  
+  <img src="/images/llvm-x86.png">  
+</div>
+
+<p>LLVM提供DSL语言对目标平台进行一组.tb文件的特性描述，最终通过tblgen进行处理，生成特定平台的代码。<br>LLVM还提供链接时和安装时代码优化：</p>
+<div style="text-align:center">  
+  <img src="/images/llvm-linker-opt.png">  
+</div>
+<p align="center">链接时优化</p>
+<div style="text-align:center">  
+  <img src="/images/llvm-install-opt.png">  
+</div>
+<p align="center">安装时优化</p>
+
 <h1 id="LLVM工具链"><a href="#LLVM工具链" class="headerlink" title="LLVM工具链"></a>LLVM工具链</h1><p>Talk is cheap, show me the code.<br>下面通过简单的C语言代码示例，来看看C源码是怎么被LLVM编译器一步步处理的:<br>C实现一个简单的加法：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int add() &#123;</span><br><span class="line">    int a = 1;</span><br><span class="line">    int b = 2;</span><br><span class="line">    int c = a + b;</span><br><span class="line">    return c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -265,7 +298,7 @@
   </p>
   <p class="copyright-item">
     <span>Link: </span>
-    <a href="http://blackbear03.github.io/2016/09/27/LLVM%E6%8E%A2%E7%A9%B6/">http://blackbear03.github.io/2016/09/27/LLVM%E6%8E%A2%E7%A9%B6/</a>
+    <a href="http://blackbear03.github.io/2016/09/22/LLVM%E6%8E%A2%E7%A9%B6/">http://blackbear03.github.io/2016/09/22/LLVM%E6%8E%A2%E7%A9%B6/</a>
   </p>
   <p class="copyright-item">
     <span>License: </span>
@@ -280,6 +313,12 @@
 
   
   <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Tech/">Tech</a>
+      
+    </div>
     
       
   <nav class="post-nav">  
