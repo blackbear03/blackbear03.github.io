@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Website mata -->
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<!-- Disable transformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<!-- Website description -->
+
+<meta name="description" content="Spring boot：iTerm2打造阿里云远程连接工具" />
+
+
+<!-- Website keywords -->
+
+<meta name="keywords" content="Tech, LAO WANG" />
+
+
+
+
+<!-- Website rss -->
+
+<link rel="alternate" href="/atom.xml" title="LAO WANG" type="application/atom+xml">
+
+
+<!-- Website favicon -->
+
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+
+
+<!-- Canonical, good for google search engine -->
+<link rel="canonical" href="http://blackbear03.github.io/2020/01/31/Spring-boot：iTerm2打造阿里云远程连接工具/" />
+
+<!-- Fancybox styling -->
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" />
+
+
+<!-- MathJax (LaTeX) support -->
+
+
+<!-- Theme styling -->
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<!-- Analytics and push -->
+
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?" + "8ee5fa5409f3df806c00a4afa80773da";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+  
+
+
+
+<!-- LeanCloud Counter -->
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"latex":false};
+</script>
+  
+  <title>Spring boot：iTerm2打造阿里云远程连接工具 - LAO WANG</title>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  <div class="scrollPercentage"></div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">LAO WANG</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+    <a href="/">
+      <li class="mobile-menu-item">
+        
+        
+        Home              </li>
+    </a>
+    
+    <a href="/about/me">
+      <li class="mobile-menu-item">
+        
+        
+        About              </li>
+    </a>
+    
+    <a href="/links">
+      <li class="mobile-menu-item">
+        
+        
+        Links              </li>
+    </a>
+    
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+      <div class="logo-wrapper">  
+  <a href="/." class="logo">LAO WANG</a>  
+</div>  
+  
+<nav class="site-navbar">  
+    
+    <ul id="menu" class="menu">  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/">  
+              
+              
+              Home  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/about/me">  
+              
+              
+              About  
+              
+          </a>  
+        </li>  
+        
+        <li class="menu-item">  
+          <a class="menu-item-link" href="/links">  
+              
+              
+              Links  
+              
+          </a>  
+        </li>  
+        
+    </ul>  
+    
+</nav>  
+
+    </header>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      Spring boot：iTerm2打造阿里云远程连接工具
+      
+    </h1>
+
+    <div class="post-meta">
+      <span class="post-time">
+        2020-01-31
+      </span>
+      
+      
+      
+    </div>
+  </header>
+
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iTerm2%E6%89%93%E9%80%A0%E8%BF%9C%E7%A8%8B%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">iTerm2打造远程工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%98%BF%E9%87%8C%E4%BA%91ECS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E4%BE%8B%E5%85%AC%E7%BD%91IP"><span class="toc-number">1.1.</span> <span class="toc-text">获取阿里云ECS服务器实例公网IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAiTerm-Profile"><span class="toc-number">1.2.</span> <span class="toc-text">创建iTerm Profile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8aliyun-Profile%E6%96%B0%E5%BB%BAiTerm-Window-Tab"><span class="toc-number">1.3.</span> <span class="toc-text">使用aliyun Profile新建iTerm Window&#x2F;Tab</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%94%AF%E6%8C%81rz%E5%92%8Csz%E5%91%BD%E4%BB%A4%E7%9A%84lrzsz"><span class="toc-number">1.4.</span> <span class="toc-text">安装支持rz和sz命令的lrzsz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8ECS%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85lrzsz"><span class="toc-number">1.5.</span> <span class="toc-text">在ECS服务器安装lrzsz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECS%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%91%E5%AE%9A%E5%9F%9F%E5%90%8D"><span class="toc-number">1.6.</span> <span class="toc-text">ECS服务器绑定域名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0A%E8%AE%B0%E5%BD%95"><span class="toc-number">1.6.1.</span> <span class="toc-text">添加A记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E9%AA%8C%E8%AF%81"><span class="toc-number">1.6.2.</span> <span class="toc-text">本地验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ECS%E5%AE%89%E8%A3%85MariaDB"><span class="toc-number">1.7.</span> <span class="toc-text">ECS安装MariaDB</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85MariaDB"><span class="toc-number">1.7.1.</span> <span class="toc-text">安装MariaDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95MariaDB"><span class="toc-number">1.7.2.</span> <span class="toc-text">登录MariaDB</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-number">1.8.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Alibaba-Cloud-Toolkit"><span class="toc-number">1.8.1.</span> <span class="toc-text">安装Alibaba Cloud Toolkit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEAccess-Key"><span class="toc-number">1.8.2.</span> <span class="toc-text">配置Access Key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ECS%E9%83%A8%E7%BD%B2"><span class="toc-number">1.8.3.</span> <span class="toc-text">ECS部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.8.4.</span> <span class="toc-text">远程启动服务</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">相关链接：</span></a></li></ol>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    
+    <h1 id="iTerm2打造远程工具"><a href="#iTerm2打造远程工具" class="headerlink" title="iTerm2打造远程工具"></a>iTerm2打造远程工具</h1><h2 id="获取阿里云ECS服务器实例公网IP"><a href="#获取阿里云ECS服务器实例公网IP" class="headerlink" title="获取阿里云ECS服务器实例公网IP"></a>获取阿里云ECS服务器实例公网IP</h2><p>在阿里云控制台的实例列表中，获取ECS服务器实例的公网IP. (如果实例列表为空，请先选择正确的区域)</p>
+<div style="text-align:center">  
+  <img src="/images/instance-list.png">  
+</div>
+
+<h2 id="创建iTerm-Profile"><a href="#创建iTerm-Profile" class="headerlink" title="创建iTerm Profile"></a>创建iTerm Profile</h2><ol>
+<li>新建一个名为aliyun的Profile</li>
+<li>选择Command（另一个选项是Login Shell）, 设置命令行内容为：ssh -A  -p 22 root@阿里云服务器公网IP</li>
+<li>重启iTerm<div style="text-align:center">  
+  <img src="/images/iterm-profile.png">  
+</div></li>
+</ol>
+<h2 id="使用aliyun-Profile新建iTerm-Window-Tab"><a href="#使用aliyun-Profile新建iTerm-Window-Tab" class="headerlink" title="使用aliyun Profile新建iTerm Window&#x2F;Tab"></a>使用aliyun Profile新建iTerm Window&#x2F;Tab</h2><ol>
+<li><p>选中Profiles菜单，选择aliyun:</p>
+<div style="text-align:center">  
+  <img src="/images/iterm-menu.png">  
+</div>
+</li>
+<li><p>iTerm会新建一个Tab</p>
+</li>
+</ol>
+<div style="text-align:center">  
+  <img src="/images/iterm-tab.png">  
+</div>
+
+<ol start="3">
+<li>输入阿里云服务器登录密码，即可远程连接到ECS服务器实例<div style="text-align:center">  
+  <img src="/images/ssh-connect.png">  
+</div></li>
+</ol>
+<h2 id="安装支持rz和sz命令的lrzsz"><a href="#安装支持rz和sz命令的lrzsz" class="headerlink" title="安装支持rz和sz命令的lrzsz"></a>安装支持rz和sz命令的lrzsz</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install lrzsz</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在GitHub下载iterm2-zmodem</li>
+<li>把iterm2-send-zmodem.sh 和iterm2-recv-zmodem.sh两个脚本copy到&#x2F;usr&#x2F;local&#x2F;bin&#x2F;目录下</li>
+<li>设置脚本权限：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 /usr/local/bin/iterm2-*</span><br></pre></td></tr></table></figure></li>
+<li>设置Iterm2的Tirgger特性，<strong>profiles-&gt;default-&gt;editProfiles-&gt;Advanced</strong>中的Tirgger.<br>添加两条trigger，分别设置 Regular expression，Action，Parameters，Instant如下：<ul>
+<li>第一条<br> Regular expression: rz waiting to receive.**B0100<br> Action: Run Silent Coprocess<br> Parameters: &#x2F;usr&#x2F;local&#x2F;bin&#x2F;iterm2-send-zmodem.sh<br> Instant: checked</li>
+<li>第二条<br>Regular expression: **B00000000000000<br>Action: Run Silent Coprocess<br>Parameters: &#x2F;usr&#x2F;local&#x2F;bin&#x2F;iterm2-recv-zmodem.sh<br>Instant: checked<div style="text-align:center">  
+<img src="/images/ssh-lrzsz.png">  
+</div></li>
+</ul>
+</li>
+</ol>
+<h2 id="在ECS服务器安装lrzsz"><a href="#在ECS服务器安装lrzsz" class="headerlink" title="在ECS服务器安装lrzsz"></a>在ECS服务器安装lrzsz</h2><p>命令行安装lrzsz:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure>
+
+<p>使用rz命令上传jdk</p>
+<ol>
+<li>Oracle官方下载Linux x86_64版本的jdk压缩包<br>使用iTerm 2 aliyun Profile新建Tab, 登录ECS服务器并运行rz命令：<br>rz</li>
+<li>在文件选择器中选中jdk压缩包，确认并等待上传</li>
+<li>解压：<br>tar -zxvf jdk-8u221-linux-x64.tar.gz</li>
+<li>配置环境变量：</li>
+<li>编辑&#x2F;etc&#x2F;profile文件：<br>export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_221 export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib&#x2F; export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin export PATH JAVA_HOME CLASSPATH</li>
+<li>立即执行&#x2F;etc&#x2F;profile文件，使之生效：<br>source &#x2F;etc&#x2F;profile</li>
+<li>运行java命令验证jdk是否安装成功：<br>java -version</li>
+</ol>
+<h2 id="ECS服务器绑定域名"><a href="#ECS服务器绑定域名" class="headerlink" title="ECS服务器绑定域名"></a>ECS服务器绑定域名</h2><h3 id="添加A记录"><a href="#添加A记录" class="headerlink" title="添加A记录"></a>添加A记录</h3><ol>
+<li>选择域名进入解析配置</li>
+<li>添加一条云解析设置，记录类型为A记录，记录值是ECS服务器公网ipv4 IP地址，TTL选择默认值10分钟，点击添加即可<div style="text-align:center">  
+  <img src="/images/ecs-arecord.png">  
+</div></li>
+</ol>
+<h3 id="本地验证"><a href="#本地验证" class="headerlink" title="本地验证"></a>本地验证</h3><p>执行ping命令验证域名是否绑定成功</p>
+<div style="text-align:center">  
+  <img src="/images/ecs-ping.png">  
+</div>
+
+<h2 id="ECS安装MariaDB"><a href="#ECS安装MariaDB" class="headerlink" title="ECS安装MariaDB"></a>ECS安装MariaDB</h2><h3 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h3><p>使用yum命令安装MariaDB</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mariadb-server mariadb</span><br></pre></td></tr></table></figure>
+<p>启动MariaDB，并设置开机启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mariadb systemctl enable mariadb</span><br></pre></td></tr></table></figure>
+<p>mysql初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@server1 ~]# mysql_secure_installation NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MySQL SERVERS IN PRODUCTION USE! PLEASE READ EACH STEP CAREFULLY! In order to log into MySQL to secure it, we&#x27;ll need the current password for the root user. If you&#x27;ve just installed MySQL, and you haven&#x27;t set the root password yet, the password will be blank, so you should just press enter here. Enter current password for root (enter for none):&lt;–初次运行直接回车 OK, successfully used password, moving on… Setting the root password ensures that nobody can log into the MySQL root user without the proper authorisation. Set root password? [Y/n] &lt;– 是否设置root用户密码，输入y并回车或直接回车 New password: &lt;– 设置root用户的密码 Re-enter new password: &lt;– 再输入一次你设置的密码 Password updated successfully! Reloading privilege tables.. … Success! By default, a MySQL installation has an anonymous user, allowing anyone to log into MySQL without having to have a user account created for them. This is intended only for testing, and to make the installation go a bit smoother. You should remove them before moving into a production environment. Remove anonymous users? [Y/n] &lt;– 是否删除匿名用户,生产环境建议删除，所以直接回车 … Success! Normally, root should only be allowed to connect from &#x27;localhost&#x27;. This ensures that someone cannot guess at the root password from the network. Disallow root login remotely? [Y/n] &lt;–是否禁止root远程登录,根据自己的需求选择Y/n并回车,建议禁止 … Success! By default, MySQL comes with a database named &#x27;test&#x27; that anyone can access. This is also intended only for testing, and should be removed before moving into a production environment. Remove test database and access to it? [Y/n] &lt;– 是否删除test数据库,直接回车 - Dropping test database… … Success! - Removing privileges on test database… … Success! Reloading the privilege tables will ensure that all changes made so far will take effect immediately. Reload privilege tables now? [Y/n] &lt;– 是否重新加载权限表，直接回车 … Success! Cleaning up… All done! If you&#x27;ve completed all of the above steps, your MySQL installation should now be secure. Thanks for using MySQL! [root@server1 ~]#</span><br></pre></td></tr></table></figure>
+
+<h3 id="登录MariaDB"><a href="#登录MariaDB" class="headerlink" title="登录MariaDB"></a>登录MariaDB</h3><p>使用root账号登录MariaDB:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><h3 id="安装Alibaba-Cloud-Toolkit"><a href="#安装Alibaba-Cloud-Toolkit" class="headerlink" title="安装Alibaba Cloud Toolkit"></a>安装Alibaba Cloud Toolkit</h3><div style="text-align:center">  
+  <img src="/images/aliyun-toolkit.png">  
+</div>
+
+<h3 id="配置Access-Key"><a href="#配置Access-Key" class="headerlink" title="配置Access Key"></a>配置Access Key</h3><div style="text-align:center">  
+  <img src="/images/access-key.png">  
+</div>
+
+<h3 id="ECS部署"><a href="#ECS部署" class="headerlink" title="ECS部署"></a>ECS部署</h3><div style="text-align:center">  
+  <img src="/images/deploy-ecs-1.png">  
+</div>
+
+<div style="text-align:center">  
+  <img src="/images/deploy-ecs-2.png">  
+</div>
+
+<h3 id="远程启动服务"><a href="#远程启动服务" class="headerlink" title="远程启动服务"></a>远程启动服务</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup java -jar service-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<h1 id="相关链接："><a href="#相关链接：" class="headerlink" title="相关链接："></a>相关链接：</h1><p>[1] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/apollo1616/p/10205216.html">LINUX安装MARIADB</a><br>[2] <a target="_blank" rel="noopener" href="https://www.cnblogs.com/charlottepl/p/12661542.html">部署SpringBoot到阿里云</a></p>
+
+    
+  </div>
+
+  
+  <!-- Post Copyright -->
+
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span>Author: </span>
+    <a href="http://blackbear03.github.io">Mark</a>
+  </p>
+  <p class="copyright-item">
+    <span>Link: </span>
+    <a href="http://blackbear03.github.io/2020/01/31/Spring-boot%EF%BC%9AiTerm2%E6%89%93%E9%80%A0%E9%98%BF%E9%87%8C%E4%BA%91%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/">http://blackbear03.github.io/2020/01/31/Spring-boot%EF%BC%9AiTerm2%E6%89%93%E9%80%A0%E9%98%BF%E9%87%8C%E4%BA%91%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7/</a>
+  </p>
+  <p class="copyright-item">
+    <span>License: </span>
+    
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+  </p>
+</div>
+
+    
+
+  
+
+  
+  <footer class="post-footer">
+    
+    <div class="post-tags">
+      
+      <a href="/tags/Tech/">Tech</a>
+      
+    </div>
+    
+      
+  <nav class="post-nav">  
+      
+      
+      <a class="next" href="/2020/01/30/Spring-boot%EF%BC%9A%E4%BD%BF%E7%94%A8Mybatis%E8%AE%BF%E9%97%AEMySQL/">  
+        <span class="next-text nav-default">Spring boot：使用Mybatis访问MySQL</span>  
+        <span class="prev-text nav-mobile">Next</span>  
+        <i class="iconfont icon-right"></i>  
+      </a>  
+      
+  </nav>  
+  
+
+  </footer>
+  
+
+</article>
+        </div>
+          
+  <div class="comments" id="comments">  
+      
+      <div id="utterances-container"></div>  
+      
+  </div>  
+  
+
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <!-- Social Links -->
+
+<div class="social-links">
+  
+  
+  
+  
+  <a href="mailto:blackbear03.w@gmail.com" class="iconfont icon-email" title="email"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://twitter.com/blackbear_03" class="iconfont icon-twitter" title="twitter"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <a target="_blank" rel="noopener" href="https://github.com/blackbear03" class="iconfont icon-github" title="github"></a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+  
+</div>
+
+
+<!-- 
+  <span id="busuanzi_container_site_pv">
+    欢迎来自C-53行星的第<span id="busuanzi_value_site_uv"></span>位访客
+  </span>
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+ <span class="post-meta-divider">|</span>
+  <span id="busuanzi_container_site_uv" style='display:none'>
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+  </span>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ -->
+
+<!-- <div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme -
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/zeed-w-beez/hexo-theme-even">Even</a>
+  </span>
+  <span class="division">|</span>
+  <span class="hosting-info">
+    footer.hosting
+  </span>
+
+  <span class="copyright-year">
+    <span>
+      
+      &copy;
+      
+      2015 - 2024      
+    </span>
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+
+    <span class="author">Mark</span>
+  </span>
+
+</div> -->
+
+<div class="copyright">
+  
+    <span id="busuanzi_container_site_pv">
+      欢迎来自C-53行星的第<span id="busuanzi_value_site_pv"></span>位朋友
+    </span>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <span class="heart">
+    <i class="iconfont icon-heart"></i>
+  </span>
+
+</div>
+    </footer>
+    <div class="back-to-top" id="back-to-top"> <i class="iconfont icon-up"></i> </div>
+  </div>
+    
+    
+    
+    
+    
+  
+<script>
+  var container = document.getElementById('utterances-container');
+  var script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', 'blackbear03/blackbear03.github.io');
+  script.setAttribute('issue-term', 'title');
+  script.setAttribute('theme', 'github-dark');
+  script.setAttribute('label', 'utterances');
+  script.crossorigin = 'anonymous';
+  script.async = true;
+
+  container.appendChild(script);
+</script>
+  
+    
+  
+
+  
+
+
+
+
+
+
+
+<script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+
+
+
+<script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+
+</html>
